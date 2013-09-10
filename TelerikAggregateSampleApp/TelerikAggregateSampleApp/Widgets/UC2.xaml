@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="TelerikAggregateSampleApp.UC2"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <telerik:RadGridView
+            Name="App_Stats"
+            RowHeight="40"
+            CanUserFreezeColumns="False"
+            CanUserResizeColumns="False"
+            ShowGroupPanel="False"
+            IsReadOnly="True"
+            ItemsSource="{Binding stats}"
+            AutoGenerateColumns="False"
+            SelectionMode="Single"
+            SelectionUnit="FullRow"
+            FontSize="13"
+            Grid.Row="0">
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn
+                    DataMemberBinding="{Binding Name}"
+                    Header ="Name"
+                    TextAlignment="Justify"
+                    IsFilterable="False">
+                </telerik:GridViewDataColumn>
+                <telerik:GridViewDataColumn
+                    DataMemberBinding="{Binding Skills}"
+                    Header ="Skills"
+                    TextAlignment="Justify"
+                    IsFilterable="False">
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:CountFunction FunctionName="AppCount" />
+                        <telerik:SumFunction FunctionName="GrandTotal" SourceField="Skills" />
+                        <telerik:AverageFunction FunctionName="AvgSkills" SourceField="Skills" />
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+        <StackPanel Grid.Row="1">
+            <TextBlock Margin="10,0,0,0" Text="{Binding AggregateResults[\AppCount\].FormattedValue, ElementName=App_Stats}" />
+            <TextBlock Margin="10,0,0,0" Text="{Binding AggregateResults[\GrandTotal\].FormattedValue, ElementName=App_Stats}" />
+            <TextBlock Margin="10,0,0,0" Text="{Binding AggregateResults[\AvgSkills\].FormattedValue, ElementName=App_Stats}" />
+        </StackPanel>
+    </Grid>
+</UserControl>
